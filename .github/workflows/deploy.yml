@@ -14,18 +14,26 @@ jobs:
       - name: "1. Checkout Code"
         uses: actions/checkout@v4
 
-      - name: "2. Setup Terraform"
+      - name: "2. Insert Real Deployment Date"
+        run: |
+          # Obtenemos la fecha actual en formato de Colombia
+          DEPLOY_DATE=$(TZ='America/Bogota' date '+%d de %B de %Y, %H:%M')
+          # Reemplazamos el marcador FECHA_SISTEMA_GITHUB por la fecha real
+          sed -i "s/FECHA_SISTEMA_GITHUB/$DEPLOY_DATE/g" index.html
+          echo "Fecha de despliegue configurada: $DEPLOY_DATE"
+
+      - name: "3. Setup Terraform"
         uses: hashicorp/setup-terraform@v3
 
-      - name: "3. Terraform Init"
+      - name: "4. Terraform Init"
         run: terraform init
 
-      - name: "4. Terraform Format & Validate"
+      - name: "5. Terraform Format & Validate"
         run: |
           terraform fmt -check
           terraform validate
 
-      - name: "5. Terraform Apply"
+      - name: "6. Terraform Apply"
         env:
           # Aquí conectamos los secretos de GitHub con Terraform
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
