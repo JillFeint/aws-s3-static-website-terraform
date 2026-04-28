@@ -1,0 +1,16 @@
+# Local terraform directory
+.terraform/
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Crash logs
+crash.log
+
+# Plan outputs
+*.tfplan
+*.out
+
+# OS files
+.DS_Store
